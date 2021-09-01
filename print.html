@@ -1,0 +1,523 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Diplomat Book</title>
+                <meta name="robots" content="noindex" />
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">3.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">3.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">3.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">3.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">3.5.</strong> Writeable</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">The Diplomat Book</h1>
+
+                    <div class="right-buttons">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><a href="https://github.com/rust-diplomat/diplomat">Diplomat</a> is a framework and tool for generating bindings to Rust libraries from an extensible set of languages.</p>
+<p>Diplomat is for <em>unidirectional</em> bindings: it's for when foreign code wishes to call into a Rust library, but not vice versa. If you're looking for bidirectional bindings, tools like <a href="https://github.com/dtolnay/cxx">cxx</a> are a good bet.</p>
+<p>Diplomat is a proc macro paired with a tool. The proc macro is capable of generating an <code>extern &quot;C&quot;</code> binding layer around tagged Rust code, while the tool is able to generate corresponding C, C++, JS, or <code>&lt;insert language here&gt;</code> that philosophically matches the API on the Rust side. This means that methods in Rust map to &quot;methods&quot; in the target language, <code>Result</code> in Rust map to tagged unions in C++ and exceptions in Javascript, etc. These all work through the generated C API, however they preserve higher level API features which C cannot express.</p>
+<h2 id="a-note-on-the-design"><a class="header" href="#a-note-on-the-design">A note on the design</a></h2>
+<p>You can read the full design doc <a href="https://github.com/rust-diplomat/diplomat/blob/main/docs/design_doc.md">here</a>. </p>
+<p>Diplomat does not do cross-crate global analysis, it restricts its view to specially tagged modules, and only generates bindings based on information found in those modules. This means that changing some struct in some dependency will not magically affect your generated C++/JS/etc APIs; all such change can only come from deliberate change to these tagged modules. This also means that Diplomat can cleanly define a subset of Rust used for declaring the exported API without impacting the flavor of Rust used in dependencies. One can imagine <code>#[diplomat::bridge]</code> blocks to almost be a DSL for bridging between your Rust APIs and a more general API shape that can be translated cleanly across languages.</p>
+<p>Diplomat is designed such that it should not be a large amount of effort to write new language targets for Diplomat.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<p>To install the <code>diplomat</code> CLI tool, run</p>
+<pre><code class="language-shell">$ cargo install diplomat-tool
+</code></pre>
+<p>Note that right now Diplomat is still subject to change and it might be better to install from a git revision for the latest features.</p>
+<p>You can then add <code>diplomat</code> as a dependency to your project like so:</p>
+<pre><code class="language-toml">diplomat = &quot;0.2.0&quot;
+diplomat-runtime = &quot;0.2.0&quot;
+</code></pre>
+<p>It is recommended to create a separate crate for the FFI interface. Diplomat will only read the contents of specially tagged modules so it is possible to mix Diplomat code with normal Rust code, but it is prefereable to minimize this since proc macros can make debugging hard.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="basics"><a class="header" href="#basics">Basics</a></h1>
+<p>When using Diplomat, you'll need to define Rust modules that contain the Rust APIs you want to expose. You can do this by using the <code>diplomat::bridge</code> macro:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    pub struct MyFFIType {
+        pub a: i32,
+        pub b: bool,
+    }
+    
+    impl MyFFIType {
+        pub fn create() -&gt; MyFFIType {
+            MyFFIType {
+                a: 42,
+                b: true
+            }
+        }
+
+        pub fn do_a_thing(&amp;self) {
+            println!(&quot;doing thing {:?}&quot;, self.b);
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This is a simple struct with public fields; which is easier to reason about in an introductory example. <em>Most</em> APIs exposed via Diplomat will be via &quot;opaque types&quot;, to be covered in the <a href="./opaque.html">chapter on opaque types</a>.</p>
+<p>Every type declared within a <code>diplomat::bridge</code> module along with all methods in its associated impl will be exposed over FFI. For example, the above code will generate the following extern API:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+extern &quot;C&quot; fn MyFFIType_create() -&gt; MyFFIType {
+    MyFFIType::create()
+}
+
+#[no_mangle]
+extern &quot;C&quot; fn MyFFIType_do_a_thing(this: &amp;MyFFIType) {
+    this.do_a_thing()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can then generate the bindings for this API using the <code>diplomat-tool</code> CLI.</p>
+<h2 id="c"><a class="header" href="#c">C++</a></h2>
+<p>For example, if we want to generate C++ bindings, we can create a folder `cpp/`` and generate bindings in it by running:</p>
+<pre><code class="language-shell">$ diplomat-tool cpp cpp/
+</code></pre>
+<p>This will generate the following struct in <code>MyFFIType.hpp</code>, along with some boilerplate:</p>
+<pre><code class="language-cpp">struct MyFFIType {
+ public:
+  int32_t a;
+  bool b;
+  static MyFFIType create_();
+  void do_a_thing();
+};
+</code></pre>
+<p>If we want to generate Sphinx documentation to cpp-docs, we can run with that as an additional parameter:</p>
+<pre><code class="language-shell">$ diplomat-tool cpp cpp/ --docs cpp-docs/
+</code></pre>
+<h2 id="wasm"><a class="header" href="#wasm">WASM</a></h2>
+<p>For WASM bindings, you can use the following options, with similarly named directories:</p>
+<pre><code class="language-shell">$ diplomat-tool js js/ --docs js/docs/
+</code></pre>
+<p>This will generate JS that has a <code>MyFFIType</code> class, with a static <code>create()</code> method, a <code>do_a_thing()</code> method, and getters for the fields. This JS will require there to be a <code>wasm.mjs</code> file that loads in the built wasm file (See <a href="https://github.com/rust-diplomat/diplomat/issues/80">issue #80</a> for improving this), which you can base off of <a href="https://github.com/rust-diplomat/diplomat/blob/38cffa9bc2ef21d0aba89ed7d76236de4153248a/example/js/wasm.mjs">this file</a>.</p>
+<h2 id="c-1"><a class="header" href="#c-1">C</a></h2>
+<p>While low-level C headers are generated in the process of running <code>diplomat-tool cpp</code>, you can also generate just the C headers with</p>
+<pre><code class="language-shell">$ diplomat-tool c c/
+</code></pre>
+<p>Note that Diplomat's C mode generates direct bindings to the lower level <code>extern &quot;C&quot;</code> API, and is not idiomatic C code. It is recommended that one build a higher level API around the C API (perhaps by writing a plugin) if C bindings are desired.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
+<p>Diplomat only supports a small set of types that can be passed over FFI. These are:</p>
+<ul>
+<li>All integers, as well as <code>bool</code> and <code>char</code></li>
+<li>String slices</li>
+<li>References (mutable and immutable)</li>
+<li><code>Box&lt;T&gt;</code></li>
+<li><a href="./opaque.html">Opaque types</a></li>
+<li><a href="./structs.html">Structs and C-like enums</a></li>
+<li><a href="./option.html"><code>Option&lt;T&gt;</code></a></li>
+<li><a href="./result.html"><code>DiplomatResult&lt;T, E&gt;</code></a></li>
+<li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings</li>
+<li><code>()</code></li>
+</ul>
+<p>If these types contain other types (e.g. the fields of a struct, or the <code>T/E</code> values of <code>DiplomatResult</code>), they must also be &quot;allowed&quot; types.</p>
+<p>More types can be supported in the future. Many of these types have restrictions, for example opaque types must be behind some form of pointer, and <code>()</code> only works in return positions.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="opaque-types"><a class="header" href="#opaque-types">Opaque Types</a></h1>
+<p>In the vast majority of cases, we'd like to expose Rust types over FFI &quot;opaquely&quot;, that is, the FFI code does not know anything about the contents of these types.</p>
+<p>By default, Diplomat will not let you expose fields of types other than the <a href="./types.html">allowed types</a> over FFI. The following code will trigger a resolution error when running <code>diplomat-tool</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    pub struct MyFFIType {
+        pub a: i32,
+        pub b: Vec&lt;String&gt;, // or &quot;SomeTypeDefinedElsewhere&quot;
+    }
+    
+    impl MyFFIType {
+        pub fn create() -&gt; MyFFIType {
+            todo!()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Of course, if Diplomat is to be able to usefully expose Rust APIs without requiring everything be defined within Diplomat's bridge blocks, there has to be some way to include them in this the API.</p>
+<p>For this in Diplomat we declare <em>opaque types</em>, which can only exist behind pointers. Such types can contain whatever they want, but they can never be passed over the stack through FFI, and the other side cannot peek into them in ways other than calling explicitly defined methods.</p>
+<p>For example, say we have the following type:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct MyCollection {
+    name: String,
+    items: Vec&lt;String&gt;,
+}
+
+impl MyCollection {
+    fn new(name: String) -&gt; Self {
+        Self {
+            name, items: vec![]
+        }
+    }
+
+    fn push(&amp;mut self, s: String) {
+        self.items.push(s)
+    }
+
+    fn dump(&amp;self) {
+        println!(&quot;Collection {} with items {:?}&quot;, self.name, self.items);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>To expose it over FFI, we'd do something like:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    // import this from wherever, does not need
+    // to be the same crate
+    use super::MyCollection as RustCollection;
+
+    #[diplomat::opaque]
+    struct MyCollection(RustCollection);
+
+    impl MyCollection {
+        pub fn create(s: &amp;str) -&gt; Box&lt;Self&gt; {
+            Box::new(MyCollection(RustCollection::new(s.into())))
+        }
+
+        pub fn push(&amp;mut self, s: &amp;str) {
+            self.0.push(s.into())
+        }
+
+        pub fn dump(&amp;self) {
+            self.0.dump()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This will generate code exposing <code>create()</code>, <code>push()</code>, and <code>dump()</code> over FFI, as well as glue to ensure the destructor is called. However this will not expose any way to get at the <code>RustCollection</code>.</p>
+<p>For example, the generated C++ looks something like</p>
+<pre><code class="language-cpp">class MyCollection {
+ public:
+  static MyCollection create(const std::string_view s);
+  void push(const std::string_view s);
+  void dump();
+  // snip
+ private:
+  // just a pointer with a custom destructor
+  std::unique_ptr&lt;capi::MyCollection, MyCollectionDeleter&gt; inner;
+};
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="structs-and-enums"><a class="header" href="#structs-and-enums">Structs and enums</a></h1>
+<p>Diplomat allows for exposing basic structs and enums over FFI. Typically these should be used as inputs and outputs to other methods, rather than having methods of their own, however</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    // just exists so we can get methods
+    #[diplomat::opaque]
+    struct Thingy;
+
+    struct ThingySettings {
+        a: bool,
+        b: u8,
+        speed: SpeedSetting,
+    }
+
+    enum SpeedSetting {
+        Fast, Medium, Slow
+    }
+
+    enum ThingyStatus {
+        Good,
+        Bad
+    }
+
+    impl Thingy {
+        pub fn create(settings: ThingySettings) -&gt; Box&lt;Thingy&gt; {
+            // in real code this would construct a Thingy based on settings
+            Thingy
+        }
+
+        pub fn get_status(&amp;self) -&gt; ThingyStatus {
+            // in real code this would call some methods on `self`
+            ThingyStatus::Good
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Enums exposed via Diplomat must be simple C-like enums. Structs may only contain fields which are <a href="./types.html">allowed</a>.</p>
+<p>In C++ the structs are translated to simple structs and the enums become simple enum classes. In JS the structs become classes with getters, and the enums are exposed as strings that get converted at the boundary.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
+<p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
+<p>The main thing to note is that <code>Option&lt;T&gt;</code> currently only works when wrapping reference types.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    // just exists so we can get methods
+    #[diplomat::opaque]
+    struct Thingy;
+
+    impl Thingy {
+        fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
+            Some(Box::new(Thingy))
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In C++ this will return a <code>std::option&lt;Thingy&gt;</code>, and in JS it will return a potentially-null object.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="result-types"><a class="header" href="#result-types">Result types</a></h1>
+<p>Result types are returned by using <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatResult.html"><code>DiplomatResult&lt;T, E&gt;</code></a>
+(see <a href="https://github.com/rust-diplomat/diplomat/issues/82">#82</a> for support for returning <code>Result&lt;T, E&gt;</code> directly).</p>
+<p>For example, let's say we wish to define a fallible constructor:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    use diplomat_runtime::DiplomatResult;
+
+    #[diplomat::opaque]
+    struct Thingy(u8);
+
+    impl Thingy {
+        pub fn try_create(string: &amp;str) -&gt; DiplomatResult&lt;Box&lt;Thingy&gt;, ()&gt; {
+            let parsed: Result&lt;u8, ()&gt; = string.parse().map_err(|_| ());
+            let boxed: Result&lt;Box&lt;Thingy&gt;, ()&gt; = parsed.map(Thingy).map(Box::new);
+            boxed.into()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>DiplomatResult</code> can be created from a regular <code>Result</code> with a simple <code>.into()</code>.</p>
+<p>On the C++ side, this will generate a method on <code>Thingy</code> with the signature</p>
+<pre><code class="language-cpp">  static diplomat::result&lt;Thingy, std::monostate&gt; try_create(const std::string_view string);
+</code></pre>
+<p><code>diplomat::result</code> is a type that can be found in the generated <a href="https://github.com/rust-diplomat/diplomat/blob/main/tool/src/cpp/runtime.hpp"><code>diplomat_runtime.hpp</code></a> file. The most basic APIs are <code>.is_ok()</code> and <code>.is_err()</code>, returning <code>bool</code>s, and <code>.ok()</code> and <code>.err()</code> returning <code>std::option</code>s. There are further APIs for constructing and manipulating these that can be found in the header file.</p>
+<p>On the JS side it will continue to return the <code>Thingy</code> class but it will <code>throw</code> the error (as an empty object in this case) in case of an error.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writeables"><a class="header" href="#writeables">Writeables</a></h1>
+<p>Most languages have their own type to handle strings. To avoid unnecessary allocations, Diplomat supports <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatWriteable.html"><code>DiplomatWriteable</code></a>, a type with a <code>Write</code> implementation which can be used to write to appropriate string types on the other side.</p>
+<p>For example, if we want to have methods that philosophically return a <code>String</code> or a <code>Result&lt;String&gt;</code>, we can do the following:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    use diplomat_runtime::{DiplomatResult, DiplomatWriteable};
+    use std::fmt::Write;
+
+    #[diplomat::opaque]
+    #[derive(Debug)]
+    struct Thingy(u8);
+
+    impl Thingy {
+        pub fn debug_output(&amp;self, writeable: &amp;mut DiplomatWriteable) {
+            write!(writeable, &quot;{:?}&quot;, self);
+        }
+
+        pub fn maybe_get_string(&amp;self, writeable: &amp;mut DiplomatWriteable) -&gt; DiplomatResult&lt;(), ()&gt; {
+            write!(writeable, &quot;integer is {}&quot;, self.0).map_err(|_| ()).into()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>On the JS side these will get converted to APIs that return strings (<code>maybe_get_string</code> will potentially throw in the case of an error, as is usual with <code>DiplomatResult</code>)</p>
+<p>In C++ multiple APIs are generated: </p>
+<pre><code class="language-cpp">  std::string debug_output();
+  diplomat::result&lt;std::string, std::monostate&gt; maybe_get_string();
+// and
+  template&lt;typename W&gt; void debug_output_to_writeable(W&amp; writeable);
+  template&lt;typename W&gt; diplomat::result&lt;std::monostate, std::monostate&gt; maybe_get_string_to_writeable(W&amp; writeable);
+</code></pre>
+<p>Essentially, versions of the API returning <code>std::string</code> are generated, where the <code>write!()</code> operation will end up writing <em>directly to the <code>std::string</code></em> with no additional intermediate Rust <code>String</code> allocations.</p>
+<h2 id="writeabletrait"><a class="header" href="#writeabletrait">WriteableTrait</a></h2>
+<p>The template versions work on any type that is hooked into <code>WriteableTrait</code>, allowing . Types can be hooked into <code>WriteableTrait</code> as follows:</p>
+<pre><code class="language-cpp">template&lt;&gt; struct WriteableTrait&lt;MyStringType&gt; {
+  static inline capi::DiplomatWriteable Construct(MyStringType&amp; t) {
+    // ...
+  }
+}
+</code></pre>
+<p>This requires constructing a <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatWriteable.html"><code>DiplomatWriteable</code></a> from the custom string type, which is documented in more detail <a href="https://github.com/rust-diplomat/diplomat/blob/38cffa9bc2ef21d0aba89ed7d76236de4153248a/runtime/src/writeable.rs#L6-L62">in the source</a>. Essentially, it involves constructing an ad-hoc virtual dispatch object for the type.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+                        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+                
+    </body>
+</html>
