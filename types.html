@@ -147,7 +147,8 @@
 <p>Diplomat only supports a small set of types that can be passed over FFI. These are:</p>
 <ul>
 <li>All integers, as well as <code>bool</code> and <code>char</code></li>
-<li>String slices</li>
+<li><code>&amp;[T]</code> where <code>T</code> is an integer, <code>bool</code>, or <code>char</code></li>
+<li><code>&amp;str</code> (string slices)</li>
 <li>References (mutable and immutable)</li>
 <li><code>Box&lt;T&gt;</code></li>
 <li><a href="./opaque.html">Opaque types</a></li>
