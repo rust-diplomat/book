@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Options - The Diplomat Book</title>
+        <title>Lifetimes - The Diplomat Book</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html" class="active"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html" class="active"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,35 +144,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
-<p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
-<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>).</p>
+                        <h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
+<p>Diplomat <em>is</em> able to safely handle methods that do complex borrowing, as long as the lifetimes are fully specified (i.e., not elided).</p>
+<p>In general, Diplomat attempts to follow language norms when it comes to patterns akin to borrowing. In C++, for example, the norm is to document the behavior of a method, which is what Diplomat does. However, in JS, the norm is to not have use-after-frees, which Diplomat attempts to achieve by stashing extra references to borrowed-from objects.</p>
+<p>For example, let's take this iterator API:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
 mod ffi {
-    // just exists so we can get methods
-    #[diplomat::opaque]
-    pub struct Thingy;
 
-    impl Thingy {
-        fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
-            Some(Box::new(Thingy))
+    #[diplomat::opaque]
+    pub struct MyFancyVec(Vec&lt;u32&gt;); // not very fancy
+
+    pub struct MyFancyIterator&lt;'a&gt;(std::slice::Iter&lt;'a, u32&gt;);
+
+
+    impl MyFancyVec {
+        pub fn new(count: usize) -&gt; Box&lt;MyFancyVec&gt; {
+            // make a random vector, this is an example
+            let vec = (5..(count + 5)).collect();
+            Box::new(MyFancyVec(vec));
+        }
+
+        pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Box&lt;MyFancyIterator&lt;'a&gt;&gt; {
+            Box::new(MyFancyIterator(self.0.iter()))
+        }
+    }
+
+    impl&lt;'a&gt; MyFancyIterator&lt;'a&gt; {
+        fn next(&amp;mut self) -&gt; u32 {
+            // We don't support Option of primitives in Diplomat currently
+            // Just default to 0. We could use a struct to represent this instead
+            // but it's not relevant to the example
+            self.0.next().copied().unwrap_or(0)
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In C++ this will return a <code>std::option&lt;Thingy&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p>It's crucial the return type of <code>MyFancyVec::iter()</code> is not held on to longer than the <code>MyFancyVec</code> it came from.</p>
+<p>In C++, this will produce documentation that looks like the following:</p>
+<pre><code>Lifetimes: `self` must live at least as long as the output.
+</code></pre>
+<p>On the other hand, in JS, the JS object wrapping <code>MyFancyIterator</code> will internally stash a reference to the <code>MyFancyVec</code>, which will be noticed by the GC, keeping the vector alive as long as needed.</p>
+<p>This also works with non-opaque structs; you can have a function that takes in a struct where one field has a lifetime, and returns a different struct with a similar property, and Diplomat will document or GC-link the appropriate fields.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="docs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="result.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="developer.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -182,11 +206,11 @@ mod ffi {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="docs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="result.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="developer.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

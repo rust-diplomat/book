@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Options - The Diplomat Book</title>
+        <title>Documentation - The Diplomat Book</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html" class="active"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html" class="active"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,35 +144,87 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
-<p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
-<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>).</p>
+                        <h1 id="documentation"><a class="header" href="#documentation">Documentation</a></h1>
+<p>Some Diplomat backends support <code>--docs</code>, which will generate additional documentation from your Markdown doc comments</p>
+<pre><code class="language-shell">$ diplomat-tool cpp cpp/ --docs cpp-docs/
+</code></pre>
+<p>The C++ and JS backends generate Sphinx docs. If using TypeScript, the definition files will automatically come with <code>tsdoc</code>-compatible doc comments.</p>
+<p>A limited amount of intra-doc-links are supported: it is possible to link to custom <em>types</em> (but not methods or variants) using <code>[`FooBar`]</code> syntax, like Rust.</p>
+<p>Furthermore, you can use <code>#[diplomat::rust_link(path::to::rust::type, Struct)]</code> to autogenerate links for to published docs, which typically show up as a &quot;For more information see &lt;link&gt;&quot; at the bottom of the docs for the given item. Since Diplomat cannot do resolution on other crates, it relies on the <code>rust_link</code> annotation to provide the kind of Rust item or doc page being linked to. An additional <code>compact</code> parameter can be passed in case you wish to provide multiple <code>rust_link</code>s that are to be collapsed into a single &quot;For more information see 1, 2, 3&quot; line.</p>
+<p>Put together, this might look something like the following:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
 mod ffi {
-    // just exists so we can get methods
+    use my_thingy::MyThingy;
+
+    /// A Thingy
+    #[diplomat::rust_link(my_thingy::MyThingy, Struct)]
     #[diplomat::opaque]
-    pub struct Thingy;
+    pub struct Thingy(MyThingy);
+
+    #[diplomat::enum_convert(my_thingy::SpeedSetting)]
+    #[diplomat::rust_link(my_thingy::SpeedSetting, Enum)]
+    pub enum SpeedSetting {
+        Fast, Medium, Slow
+    }
+
+    #[diplomat::enum_convert(my_thingy::ThingyStatus)]
+    #[diplomat::rust_link(my_thingy::ThingyStatus, Enum)]
+    pub enum ThingyStatus {
+        Good,
+        Bad
+    }
 
     impl Thingy {
-        fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
-            Some(Box::new(Thingy))
+        /// Make a [`MyThingy`]!
+        #[diplomat::rust_link(my_thingy::MyThingy::new, FnInStruct)]
+        pub fn create(speed: SpeedSetting) -&gt; Box&lt;Thingy&gt; {
+            Box::new(Thingy(Thingy::new(speed.into())))
+        }
+
+        /// Get the status
+        #[diplomat::rust_link(my_thingy::MyThingy::get_status, FnInStruct)]
+        pub fn get_status(&amp;self) -&gt; ThingyStatus {
+            self.0.get_status().into()
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In C++ this will return a <code>std::option&lt;Thingy&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p>The full list of item kinds recognized by <code>rust_link</code> is:</p>
+<ul>
+<li><code>Struct</code></li>
+<li><code>StructField</code></li>
+<li><code>Enum</code></li>
+<li><code>EnumVariant</code></li>
+<li><code>EnumVariantField</code></li>
+<li><code>Trait</code></li>
+<li><code>FnInStruct</code></li>
+<li><code>FnInEnum</code></li>
+<li><code>FnInTrait</code></li>
+<li><code>DefaultFnInTrait</code></li>
+<li><code>Fn</code></li>
+<li><code>Mod</code></li>
+<li><code>Constant</code></li>
+<li><code>AssociatedConstantInEnum</code></li>
+<li><code>AssociatedConstantInTrait</code></li>
+<li><code>AssociatedConstantInStruct</code></li>
+<li><code>Macro</code></li>
+<li><code>AssociatedTypeInEnum</code></li>
+<li><code>AssociatedTypeInTrait</code></li>
+<li><code>AssociatedTypeInStruct</code></li>
+<li><code>Typedef</code></li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="writeable.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="result.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="lifetimes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -182,11 +234,11 @@ mod ffi {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="writeable.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="result.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="lifetimes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
