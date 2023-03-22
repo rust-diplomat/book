@@ -212,7 +212,7 @@ mod ffi {
 <span class="boring">}</span></code></pre></pre>
 <p>In case the enum is <code>#[non_exhaustive]</code>, you may need to supply a <code>needs_wildcard</code> argument, like so: <code>#[diplomat::enum_convert(my_library::SpeedSetting)]</code>.</p>
 <h1 id="structs-containing-boxes"><a class="header" href="#structs-containing-boxes">Structs containing boxes</a></h1>
-<p>By default, structs cannot contain output-only types like <code>Box&lt;T&gt;</code>. This can be opted in to by using <code>#[diplomat::out_struct]</code></p>
+<p>By default, structs cannot contain output-only types like <code>Box&lt;T&gt;</code>. This can be opted in to by using <code>#[diplomat::out]</code></p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>mod ffi {
@@ -221,7 +221,7 @@ mod ffi {
     #[diplomat::opaque]
     pub struct Thingy(=MyThingy);
 
-    #[diplomat::out_struct]
+    #[diplomat::out]
     pub struct ThingyAndExtraStuff {
         pub thingy: Box&lt;Thingy&gt;,
         pub stuff: u32
