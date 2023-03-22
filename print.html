@@ -397,7 +397,7 @@ mod ffi {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>Enums exposed via Diplomat must be simple C-like enums. Structs may only contain fields which are <a href="./types.html">allowed</a>.</p>
-<p>In C++ the structs are translated to simple structs and the enums become simple enum classes. In JS the structs become classes with getters, and the enums are exposed as strings that get converted at the boundary.</p>
+<p>In C++ the structs are translated to simple structs and the enums become simple enum classes. In JS the structs become objects with fields, and the enums are exposed as strings that get converted at the boundary.</p>
 <h1 id="diplomatenum_convert"><a class="header" href="#diplomatenum_convert"><code>diplomat::enum_convert</code></a></h1>
 <p>Diplomat can autogenerate <code>Into</code> impls to an enum from your library using <code>#[diplomat::enum_convert]</code>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
