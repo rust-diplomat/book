@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -10,7 +10,7 @@
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -31,7 +31,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -61,42 +61,71 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html" class="active"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -164,22 +193,22 @@ mod ffi {
         }
 
         pub fn do_a_thing(self) {
-            println!(&quot;doing thing {:?}&quot;, self.b);
+            println!("doing thing {:?}", self.b);
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>This is a simple struct with public fields; which is easier to reason about in an introductory example. <em>Most</em> APIs exposed via Diplomat will be via &quot;opaque types&quot;, to be covered in the <a href="./opaque.html">chapter on opaque types</a>.</p>
+<p>This is a simple struct with public fields; which is easier to reason about in an introductory example. <em>Most</em> APIs exposed via Diplomat will be via "opaque types", to be covered in the <a href="./opaque.html">chapter on opaque types</a>.</p>
 <p>Every type declared within a <code>diplomat::bridge</code> module along with all methods in its associated impl will be exposed over FFI. For example, the above code will generate the following extern API:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[no_mangle]
-extern &quot;C&quot; fn MyFFIStruct_create() -&gt; MyFFIStruct {
+extern "C" fn MyFFIStruct_create() -&gt; MyFFIStruct {
     MyFFIStruct::create()
 }
 
 #[no_mangle]
-extern &quot;C&quot; fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
+extern "C" fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
     this.do_a_thing()
 }
 <span class="boring">}</span></code></pre></pre>
@@ -209,7 +238,7 @@ extern &quot;C&quot; fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
 <p>While low-level C headers are generated in the process of running <code>diplomat-tool cpp</code>, you can also generate just the C headers with</p>
 <pre><code class="language-shell">$ diplomat-tool c c/
 </code></pre>
-<p>Note that Diplomat's C mode generates direct bindings to the lower level <code>extern &quot;C&quot;</code> API, and is not idiomatic C code. It is recommended that one build a higher level API around the C API (perhaps by writing a plugin) if C bindings are desired.</p>
+<p>Note that Diplomat's C mode generates direct bindings to the lower level <code>extern "C"</code> API, and is not idiomatic C code. It is recommended that one build a higher level API around the C API (perhaps by writing a plugin) if C bindings are desired.</p>
 
                     </main>
 
@@ -219,7 +248,7 @@ extern &quot;C&quot; fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -233,7 +262,7 @@ extern &quot;C&quot; fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

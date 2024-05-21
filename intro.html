@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -10,7 +10,7 @@
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -31,7 +31,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -61,42 +61,71 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -147,9 +176,9 @@
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><a href="https://github.com/rust-diplomat/diplomat">Diplomat</a> is a framework and tool for generating bindings to Rust libraries from an extensible set of languages.</p>
 <p>Diplomat is for <em>unidirectional</em> bindings: it's for when foreign code wishes to call into a Rust library, but not vice versa. If you're looking for bidirectional bindings, tools like <a href="https://github.com/dtolnay/cxx">cxx</a> are a good bet.</p>
-<p>Diplomat is a proc macro paired with a tool. The proc macro is capable of generating an <code>extern &quot;C&quot;</code> binding layer around tagged Rust code, while the tool is able to generate corresponding C, C++, JS, or <code>&lt;insert language here&gt;</code> that philosophically matches the API on the Rust side. This means that methods in Rust map to &quot;methods&quot; in the target language, <code>Result</code> in Rust map to tagged unions in C++ and exceptions in Javascript, etc. These all work through the generated C API, however they preserve higher level API features which C cannot express.</p>
+<p>Diplomat is a proc macro paired with a tool. The proc macro is capable of generating an <code>extern "C"</code> binding layer around tagged Rust code, while the tool is able to generate corresponding C, C++, JS, or <code>&lt;insert language here&gt;</code> that philosophically matches the API on the Rust side. This means that methods in Rust map to "methods" in the target language, <code>Result</code> in Rust map to tagged unions in C++ and exceptions in Javascript, etc. These all work through the generated C API, however they preserve higher level API features which C cannot express.</p>
 <h2 id="a-note-on-the-design"><a class="header" href="#a-note-on-the-design">A note on the design</a></h2>
-<p>You can read the full design doc <a href="https://github.com/rust-diplomat/diplomat/blob/main/docs/design_doc.md">here</a>. </p>
+<p>You can read the full design doc <a href="https://github.com/rust-diplomat/diplomat/blob/main/docs/design_doc.md">here</a>.</p>
 <p>Diplomat does not do cross-crate global analysis, it restricts its view to specially tagged modules, and only generates bindings based on information found in those modules. This means that changing some struct in some dependency will not magically affect your generated C++/JS/etc APIs; all such change can only come from deliberate change to these tagged modules. This also means that Diplomat can cleanly define a subset of Rust used for declaring the exported API without impacting the flavor of Rust used in dependencies. One can imagine <code>#[diplomat::bridge]</code> blocks to almost be a DSL for bridging between your Rust APIs and a more general API shape that can be translated cleanly across languages.</p>
 <p>Diplomat is designed such that it should not be a large amount of effort to write new language targets for Diplomat.</p>
 <h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
@@ -157,8 +186,8 @@
 <pre><code class="language-shell">$ cargo install diplomat-tool
 </code></pre>
 <p>You can then add <code>diplomat</code> as a dependency to your project like so:</p>
-<pre><code class="language-toml">diplomat = &quot;0.5.0&quot;
-diplomat-runtime = &quot;0.5.0&quot;
+<pre><code class="language-toml">diplomat = "0.5.0"
+diplomat-runtime = "0.5.0"
 </code></pre>
 <p>It is recommended to create a separate crate for the FFI interface. Diplomat will only read the contents of specially tagged modules so it is possible to mix Diplomat code with normal Rust code, but it is prefereable to minimize this since proc macros can make debugging hard.</p>
 
@@ -167,7 +196,7 @@ diplomat-runtime = &quot;0.5.0&quot;
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next" href="user.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="user.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,7 +207,7 @@ diplomat-runtime = &quot;0.5.0&quot;
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next" href="user.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="user.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
