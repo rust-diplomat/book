@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Returning Strings: Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li><li class="chapter-item expanded "><a href="abi.html"><strong aria-hidden="true">2.5.</strong> ABI naming/renaming</a></li><li class="chapter-item expanded "><a href="attrs.html"><strong aria-hidden="true">2.6.</strong> Customizing via attributes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="attrs/disable.html"><strong aria-hidden="true">2.6.1.</strong> Disabling APIs</a></li><li class="chapter-item expanded "><a href="attrs/rename.html"><strong aria-hidden="true">2.6.2.</strong> Renaming APIs</a></li><li class="chapter-item expanded "><a href="attrs/namespace.html"><strong aria-hidden="true">2.6.3.</strong> Namespacing</a></li><li class="chapter-item expanded "><a href="attrs/constructors.html"><strong aria-hidden="true">2.6.4.</strong> Constructors</a></li><li class="chapter-item expanded "><a href="attrs/iterators.html"><strong aria-hidden="true">2.6.5.</strong> Iterators and iterables</a></li><li class="chapter-item expanded "><a href="attrs/accessors.html"><strong aria-hidden="true">2.6.6.</strong> Getters and setters</a></li><li class="chapter-item expanded "><a href="attrs/indexing.html"><strong aria-hidden="true">2.6.7.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="attrs/comparators.html"><strong aria-hidden="true">2.6.8.</strong> Comparators</a></li><li class="chapter-item expanded "><a href="attrs/stringifiers.html"><strong aria-hidden="true">2.6.9.</strong> Stringifiers</a></li></ol></li><li class="chapter-item expanded "><a href="safety.html"><strong aria-hidden="true">2.7.</strong> Notes on Diplomat and safety</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -181,14 +181,26 @@
 <h2 id="a-note-on-the-design"><a class="header" href="#a-note-on-the-design">A note on the design</a></h2>
 <p>You can read the full design doc <a href="https://github.com/rust-diplomat/diplomat/blob/main/docs/design_doc.md">here</a>.</p>
 <p>Diplomat does not do cross-crate global analysis, it restricts its view to specially tagged modules, and only generates bindings based on information found in those modules. This means that changing some struct in some dependency will not magically affect your generated C++/JS/etc APIs; all such change can only come from deliberate change to these tagged modules. This also means that Diplomat can cleanly define a subset of Rust used for declaring the exported API without impacting the flavor of Rust used in dependencies. One can imagine <code>#[diplomat::bridge]</code> blocks to almost be a DSL for bridging between your Rust APIs and a more general API shape that can be translated cleanly across languages.</p>
-<p>Diplomat is designed such that it should not be a large amount of effort to write new language targets for Diplomat.</p>
+<p>Diplomat is designed such that it should not be a large amount of effort to <a href="developer.html">write new language targets for Diplomat</a>.</p>
+<h2 id="backends-supported"><a class="header" href="#backends-supported">Backends supported</a></h2>
+<p>Diplomat currently supports the following backends:</p>
+<ul>
+<li>C</li>
+<li>C++</li>
+<li>JavaScript/TypeScript (using WASM)</li>
+<li>Dart</li>
+<li>Kotlin (using JNA)</li>
+</ul>
+<p>There is work in progress for a <a href="https://github.com/rust-diplomat/diplomat/issues/144">Java backend</a> (using Panama), as well as a <a href="https://github.com/rust-diplomat/diplomat/issues/604">demo-autogenerating backend</a>. We used to have a .NET backend but it was removed in a refactor, it may get added again.</p>
+<p>We're happy to fix bugs or add configurability in the current backends if their produced output does not match what you need in your language. Details on how to write new backends is documented <a href="developer.html">later in this book</a>: you can do so as a third party library depending on <code>diplomat_core</code>, but we are also happy to accept these into Diplomat with the understanding that we'll only do minimal work to keep them working over time.</p>
 <h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>To install the <code>diplomat</code> CLI tool, run</p>
 <pre><code class="language-shell">$ cargo install diplomat-tool
 </code></pre>
+<p>Let's say this installs <code>diplomat-tool 0.8.0</code></p>
 <p>You can then add <code>diplomat</code> as a dependency to your project like so:</p>
-<pre><code class="language-toml">diplomat = "0.5.0"
-diplomat-runtime = "0.5.0"
+<pre><code class="language-toml">diplomat = "0.8.0"
+diplomat-runtime = "0.8.0"
 </code></pre>
 <p>It is recommended to create a separate crate for the FFI interface. Diplomat will only read the contents of specially tagged modules so it is possible to mix Diplomat code with normal Rust code, but it is prefereable to minimize this since proc macros can make debugging hard.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="user-guide"><a class="header" href="#user-guide">User Guide</a></h1>
@@ -196,9 +208,10 @@ diplomat-runtime = "0.5.0"
 <p>To install the <code>diplomat</code> CLI tool, run</p>
 <pre><code class="language-shell">$ cargo install diplomat-tool
 </code></pre>
+<p>Let's say this installs <code>diplomat-tool 0.8.0</code></p>
 <p>You can then add <code>diplomat</code> as a dependency to your project like so:</p>
-<pre><code class="language-toml">diplomat = "0.5.0"
-diplomat-runtime = "0.5.0"
+<pre><code class="language-toml">diplomat = "0.8.0"
+diplomat-runtime = "0.8.0"
 </code></pre>
 <p>It is recommended to create a separate crate for the FFI interface. Diplomat will only read the contents of specially tagged modules so it is possible to mix Diplomat code with normal Rust code, but it is prefereable to minimize this since proc macros can make debugging hard.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="basics"><a class="header" href="#basics">Basics</a></h1>
@@ -268,16 +281,32 @@ extern "C" fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
 </code></pre>
 <p>Note that Diplomat's C mode generates direct bindings to the lower level <code>extern "C"</code> API, and is not idiomatic C code. It is recommended that one build a higher level API around the C API (perhaps by writing a plugin) if C bindings are desired.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
-<p>Diplomat only supports a small set of types that can be passed over FFI. These are:</p>
+<p>Diplomat only supports a small set of types that can be passed over FFI.</p>
 <ul>
 <li>Builtins:
 <ul>
-<li>All integers, as well as <code>bool</code> and <code>char</code></li>
-<li><code>&amp;[T]</code> where <code>T</code> is an integer, <code>bool</code>, or <code>char</code></li>
-<li><code>&amp;str</code> (string slices)</li>
-<li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings</li>
-<li><a href="./result.html"><code>Result&lt;T, E&gt;</code></a> in return values</li>
-<li><a href="./option.html"><code>Option&lt;T&gt;</code></a> of opaque types</li>
+<li>All integers</li>
+<li><code>bool</code></li>
+<li><code>char</code></li>
+<li><code>DiplomatChar</code> (<code>u32</code>), which is treated as <code>char</code>-equivalent on the backend language, but need not be a valid Unicode code point for the Rust code to be sound.</li>
+<li>Slices, <code>&amp;[T]</code> where <code>T</code> is one of:
+<ul>
+<li>An integer type</li>
+<li><code>bool</code></li>
+<li><code>char</code></li>
+<li><code>DiplomatByte</code> (<code>u8</code>): The same as <code>u8</code> except in languages where "byte buffer" and "list of integers" are different types</li>
+</ul>
+</li>
+<li>String slices:
+<ul>
+<li><code>&amp;str</code>: A validated, UTF-8 string. Will be converted/validated by the target language bindings if necessary.</li>
+<li><code>&amp;DiplomatStr</code>: An unvalidated string expected to be UTF-8.</li>
+<li><code>&amp;DiplomatStr16</code>: An unvalidated string expected to be UTF-16.</li>
+</ul>
+</li>
+<li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings. This needs to be the last parameter of the method.</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types</li>
+<li><a href="./result.html"><code>Result&lt;T, E&gt;</code> and <code>Option&lt;T&gt;</code></a> in return values</li>
 <li><code>()</code> as a <code>Result</code> <code>Ok</code>/<code>Error</code> type, or as a return value</li>
 </ul>
 </li>
@@ -288,7 +317,7 @@ extern "C" fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
 </ul>
 </li>
 </ul>
-<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/251">iterators</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a>)</p>
+<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/246">full option types</a>)</p>
 <p>The <em>main</em> distinction to keep track of is between "opaque types" and "structs": opaque types are for when you want to wrap a Rust object that has its own semantics, whereas "structs" are for when you want to transparently pass around multiple values at once (usually when you want to make an options struct as an argument, or return multiple values at once).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="opaque-types"><a class="header" href="#opaque-types">Opaque Types</a></h1>
 <p>In the vast majority of cases, we'd like to expose Rust types over FFI "opaquely", that is, the FFI code does not know anything about the contents of these types, rather it wants to do things with the type.</p>
@@ -320,17 +349,17 @@ mod ffi {
 }
 
 impl MyCollection {
-    fn new(name: String) -&gt; Self {
+    pub fn new(name: String) -&gt; Self {
         Self {
             name, items: vec![]
         }
     }
 
-    fn push(&amp;mut self, s: String) {
+    pub fn push(&amp;mut self, s: String) {
         self.items.push(s)
     }
 
-    fn dump(&amp;self) {
+    pub fn dump(&amp;self) {
         println!("Collection {} with items {:?}", self.name, self.items);
     }
 }
@@ -366,13 +395,11 @@ mod ffi {
 <p>For example, the generated C++ looks something like</p>
 <pre><code class="language-cpp">class MyCollection {
  public:
-  static MyCollection create(const std::string_view s);
+  static std::unique_ptr&lt;MyCollection&gt; create(const std::string_view s);
   void push(const std::string_view s);
   void dump();
   // snip
  private:
-  // just a pointer with a custom destructor
-  std::unique_ptr&lt;capi::MyCollection, MyCollectionDeleter&gt; inner;
 };
 </code></pre>
 <p>When exposing your library over FFI, most of the main types will probably end up being "opaque".</p>
@@ -425,7 +452,7 @@ mod ffi {
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>Enums exposed via Diplomat must be simple C-like enums. Structs may only contain fields which are <a href="./types.html">allowed</a>.</p>
+<p>Enums exposed via Diplomat must be simple C-like enums. They can have explicit discriminants. Structs may only contain fields which are themselves <a href="./types.html">allowed types</a>.</p>
 <p>In C++ the structs are translated to simple structs and the enums become simple enum classes. In JS the structs become objects with fields, and the enums are exposed as strings that get converted at the boundary.</p>
 <h1 id="diplomatenum_convert"><a class="header" href="#diplomatenum_convert"><code>diplomat::enum_convert</code></a></h1>
 <p>Diplomat can autogenerate <code>Into</code> impls to an enum from your library using <code>#[diplomat::enum_convert]</code>:</p>
@@ -444,9 +471,9 @@ mod ffi {
 
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In case the enum is <code>#[non_exhaustive]</code>, you may need to supply a <code>needs_wildcard</code> argument, like so: <code>#[diplomat::enum_convert(my_library::SpeedSetting)]</code>.</p>
+<p>In case the enum is <code>#[non_exhaustive]</code>, you may need to supply a <code>needs_wildcard</code> argument, like so: <code>#[diplomat::enum_convert(my_library::SpeedSetting, needs_wildcard)]</code>.</p>
 <h1 id="structs-containing-boxes"><a class="header" href="#structs-containing-boxes">Structs containing boxes</a></h1>
-<p>By default, structs cannot contain output-only types like <code>Box&lt;T&gt;</code>. This can be opted in to by using <code>#[diplomat::out]</code></p>
+<p>By default, structs cannot contain output-only types like <code>Box&lt;T&gt;</code>. This can be opted in to by using <code>#[diplomat::out]</code>, which will have the additional effect of making the struct an output-only type.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>mod ffi {
@@ -475,7 +502,7 @@ mod ffi {
 <span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
 <p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
-<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>).</p>
+<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>), or in return type position:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
@@ -485,13 +512,20 @@ mod ffi {
     pub struct Thingy;
 
     impl Thingy {
-        fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
+        pub fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
             Some(Box::new(Thingy))
+        }
+
+        // works in return position, but not elsewhere
+        pub fn make_option() -&gt; Option&lt;u8&gt; {
+            Some(1)
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In C++ this will return a <code>std::option&lt;Thingy&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p>In C++ <code>maybe_create</code> will return a <code>std::optional&lt;std::unique_ptr&lt;Thingy&gt;&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p><code>make_option</code> will have similar behavior, returning <code>std::optional&lt;uint8_t&gt;</code> and an integer-or-null in JS.</p>
+<p>In the future, <code>Option&lt;T&gt;</code> will be supported for most types <code>T</code> (<a href="https://github.com/rust-diplomat/diplomat/issues/246">#246</a>).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="result-types"><a class="header" href="#result-types">Result types</a></h1>
 <p>Result types are returned by using <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatResult.html"><code>Result&lt;T, E&gt;</code></a> (or <code>DiplomatResult&lt;T, E&gt;</code>).</p>
 <p>For example, let's say we wish to define a fallible constructor:</p>
@@ -511,11 +545,11 @@ mod ffi {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>On the C++ side, this will generate a method on <code>Thingy</code> with the signature</p>
-<pre><code class="language-cpp">  static diplomat::result&lt;Thingy, std::monostate&gt; try_create(const std::string_view string);
+<pre><code class="language-cpp">  static diplomat::result&lt;std::unique_ptr&lt;Thingy&gt;, std::monostate&gt; try_create(const std::string_view string);
 </code></pre>
 <p><code>diplomat::result</code> is a type that can be found in the generated <a href="https://github.com/rust-diplomat/diplomat/blob/main/tool/src/cpp/runtime.hpp"><code>diplomat_runtime.hpp</code></a> file. The most basic APIs are <code>.is_ok()</code> and <code>.is_err()</code>, returning <code>bool</code>s, and <code>.ok()</code> and <code>.err()</code> returning <code>std::option</code>s. There are further APIs for constructing and manipulating these that can be found in the header file.</p>
 <p>On the JS side it will continue to return the <code>Thingy</code> class but it will <code>throw</code> the error (as an empty object in this case) in case of an error.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="writeables"><a class="header" href="#writeables">Writeables</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="returning-strings-writeables"><a class="header" href="#returning-strings-writeables">Returning strings: Writeables</a></h1>
 <p>Most languages have their own type to handle strings. To avoid unnecessary allocations, Diplomat supports <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatWriteable.html"><code>DiplomatWriteable</code></a>, a type with a <code>Write</code> implementation which can be used to write to appropriate string types on the other side.</p>
 <p>For example, if we want to have methods that philosophically return a <code>String</code> or a <code>Result&lt;String&gt;</code>, we can do the following:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -541,23 +575,8 @@ mod ffi {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>On the JS side these will get converted to APIs that return strings (<code>maybe_get_string</code> will potentially throw in the case of an error, as is usual with <code>DiplomatResult</code>)</p>
-<p>In C++ multiple APIs are generated:</p>
-<pre><code class="language-cpp">  std::string debug_output();
-  diplomat::result&lt;std::string, std::monostate&gt; maybe_get_string();
-// and
-  template&lt;typename W&gt; void debug_output_to_writeable(W&amp; writeable);
-  template&lt;typename W&gt; diplomat::result&lt;std::monostate, std::monostate&gt; maybe_get_string_to_writeable(W&amp; writeable);
-</code></pre>
+<p>In C++ these become APIs that return <code>std::string</code> and <code>diplomat::result&lt;std::string, std::monostate&gt;</code> respectively.</p>
 <p>Essentially, versions of the API returning <code>std::string</code> are generated, where the <code>write!()</code> operation will end up writing <em>directly to the <code>std::string</code></em> with no additional intermediate Rust <code>String</code> allocations.</p>
-<h2 id="writeabletrait"><a class="header" href="#writeabletrait">WriteableTrait</a></h2>
-<p>The template versions work on any type that is hooked into <code>WriteableTrait</code>, allowing . Types can be hooked into <code>WriteableTrait</code> as follows:</p>
-<pre><code class="language-cpp">template&lt;&gt; struct WriteableTrait&lt;MyStringType&gt; {
-  static inline capi::DiplomatWriteable Construct(MyStringType&amp; t) {
-    // ...
-  }
-}
-</code></pre>
-<p>This requires constructing a <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatWriteable.html"><code>DiplomatWriteable</code></a> from the custom string type, which is documented in more detail <a href="https://github.com/rust-diplomat/diplomat/blob/38cffa9bc2ef21d0aba89ed7d76236de4153248a/runtime/src/writeable.rs#L6-L62">in the source</a>. Essentially, it involves constructing an ad-hoc virtual dispatch object for the type.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="documentation"><a class="header" href="#documentation">Documentation</a></h1>
 <p>Some Diplomat backends support <code>--docs</code>, which will generate additional documentation from your Markdown doc comments</p>
 <pre><code class="language-shell">$ diplomat-tool cpp cpp/ --docs cpp-docs/
@@ -657,11 +676,8 @@ mod ffi {
     }
 
     impl&lt;'a&gt; MyFancyIterator&lt;'a&gt; {
-        fn next(&amp;mut self) -&gt; u32 {
-            // We don't support Option of primitives in Diplomat currently
-            // Just default to 0. We could use a struct to represent this instead
-            // but it's not relevant to the example
-            self.0.next().copied().unwrap_or(0)
+        fn next(&amp;mut self) -&gt; Option&lt;u32&gt; {
+            self.0.next().copied()
         }
     }
 }
@@ -672,6 +688,343 @@ mod ffi {
 </code></pre>
 <p>On the other hand, in JS, the JS object wrapping <code>MyFancyIterator</code> will internally stash a reference to the <code>MyFancyVec</code>, which will be noticed by the GC, keeping the vector alive as long as needed.</p>
 <p>This also works with non-opaque structs; you can have a function that takes in a struct where one field has a lifetime, and returns a different struct with a similar property, and Diplomat will document or GC-link the appropriate fields.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="abi-namingrenaming"><a class="header" href="#abi-namingrenaming">ABI naming/renaming</a></h1>
+<p>As previously mentioned, the <code>#[diplomat::bridge]</code> macro from the <code>diplomat</code> crate will generate <code>extern "C"</code> functions for all methods expected to be exposed over FFI.</p>
+<p><em>By default</em>, the naming scheme for these types is <code>TypeName_method()</code>. For example, <code>Foo::bar()</code> becomes <code>Foo_bar()</code>.</p>
+<p>However, these names can be changed, both at an individual and bulk level, using the <code>#[diplomat::abi_rename = "..."]</code> attribute.</p>
+<p>One use case for this is maintaining ABI stability. Let's say you wished to change the signature or even behavior of <code>Foo::bar()</code> to go from returning a <code>u8</code> to returning a <code>u16</code>, and were okay with requiring new bindings for the new behavior, but wanted to ensure that old headers/bindings would still work against new Rust code without any change. You could do that by</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+
+    #[diplomat::opaque]
+    struct Foo;
+
+    impl Foo {
+        #[diplomat::abi_rename = "Foo_bar"]
+        pub fn old_bar(&amp;self) -&gt; u8 {}
+
+        #[diplomat::abi_rename = "Foo_bar2"]
+        pub fn bar(&amp;self) -&gt; u16 {}
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, <code>old_bar()</code> is still exposed over FFI as <code>Foo_bar()</code>, whereas the new <code>bar()</code> method is exposed as <code>Foo_bar2()</code>.</p>
+<p>However, from the point of view of higher-level bindings generated over this (e.g. in C++ or JS), <code>Foo</code> now has a <code>bar()</code> method with a new signature, and an <code>old_bar()</code> method with the signature <code>bar()</code> used to have.</p>
+<p>The attribute can be applied directly on methods, but it can also be applied on impl blocks, types, and even entire bridge modules. It supports using replacement patterns, so it can be used for namespacing the generated FFI functions:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+#[diplomat::abi_rename = "mylibrary_{}"]
+mod ffi {
+
+    #[diplomat::opaque]
+    struct Foo;
+
+    impl Foo {
+        pub fn bar() -&gt; u8 {}
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, instead of the function being generated as <code>Foo_bar()</code>, it will be generated as <code>mylibrary_Foo_bar()</code> which is a more unique symbol, less likely to cause trouble for the linker.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="customizing-via-backend-attributes"><a class="header" href="#customizing-via-backend-attributes">Customizing via backend attributes</a></h1>
+<p>Diplomat supports a number of "backend attributes" that allow one to customize the backend-side code generation of a particular API. This allows for more expressivity than that afforded by Diplomat's relatively constrained type system, including things like the ability to rename types, namespace types, or mark types as iterators.</p>
+<h2 id="configurability"><a class="header" href="#configurability">Configurability</a></h2>
+<p>All backend attributes are applied via the <code>#[diplomat::attr(...)]</code> directive. As its first parameter, it requires a configuration specification, which can be:</p>
+<ul>
+<li><code>*</code>, meaning "all backends"</li>
+<li><code>auto</code>, explained below</li>
+<li>A backend/language name: (<code>c</code>, <code>cpp</code>, <code>js</code>, <code>dart</code>, <code>kotlin</code>, <code>demo</code>, ...). Note that a backend may accept multiple names, for example the <code>demo</code> backend both accepts attributes marked for the <code>js</code> and <code>demo</code> backends.</li>
+<li>A <code>supports</code> query, like <code>supports = constructors</code>. A full list can be found on the <a href="https://docs.rs/diplomat_core/latest/diplomat_core/hir/struct.BackendAttrSupport.html"><code>BackendAttrSupport</code></a> type, but furthermore the pages on individual attributes will specifically list configuration options relevant to that attribute.</li>
+<li><code>not(...)</code> containing a configuration specification</li>
+<li><code>any(...)</code> containing one or more comma separated configuration specifications</li>
+<li><code>all(...)</code> containing one or more comma separated configuration specifications</li>
+</ul>
+<p>So, for example, to  rename a type for everyone, one may use something like <code>#[diplomat::attr(*, rename = "FancyNewName")]</code> on the type. However if the rename is only intended for a select set of backends, one may do something like <code>#[diplomat::attr(any(js, cpp), rename = "FancyNewName")]</code>.</p>
+<p>Similarly, if one wishes to only expose a type to backends that support iterators, one may do something like <code>#[diplomat::attr(not(supports = iterators), disable)]</code>.</p>
+<p>A lot of attributes (basically all of them except for <code>rename</code> and <code>disable</code>) represent features that need not be present in all backends. For example, not every backend wishes to, or can, support iteration, or namespacing, or accessors. By default when an unsupported attribute is passed to a backend, Diplomat will error as a lint. However, this has the unfortunate effect of sprinkling the code with a lot of stuff that looks like <code>#[diplomat::attr(supports = iterators, iterator)]</code>.</p>
+<p>To aid in that, <code>auto</code> can be used instead. <code>auto</code> is roughly equivalent to <code>supports = whichever attribute this is attempting to apply</code>.</p>
+<h2 id="when-to-configure"><a class="header" href="#when-to-configure">When to configure</a></h2>
+<p>Besides for reasons of differing backend support, Diplomat's attribute configuration is useful for providing a more idiomatic, tailored experience for individual languages. For example, in some languages (like C++) adding a field to a struct accepted as a parameter in a function would be a breaking change, but in languages like JS that change can be made without any breakage if the new field is nullable. In such a case, the appropriate mixing of language-specific renames can lead to a split v1/v2 API in C++ whilst JS gets a smoother experience with no need for versioning.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="disabling-apis"><a class="header" href="#disabling-apis">Disabling APIs</a></h1>
+<p>(Supported by all backends)</p>
+<p>Any type or method can be "disabled" by applying the <code>disable</code> attribute:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    #[diplomat::attr(cpp, disable)]
+    struct Foo;
+
+
+    impl Foo {
+        #[diplomat::attr(js, disable)]
+        pub fn bar() {}
+        pub fn baz() {}
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, the class <code>Foo</code> will not show up in the C++ backend. It will in the JS backend, however it will not have the function <code>bar()</code>.</p>
+<p>Currently enum variants cannot be disabled, however this is technically feasible for input-only enums and could be added if people request. It is also not possible to disable struct fields.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="renaming-apis"><a class="header" href="#renaming-apis">Renaming APIs</a></h1>
+<p>(Supported by all backends)</p>
+<p>Any type, method, field, or enum variant can be renamed with the <code>rename</code> attribute.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    #[diplomat::attr(cpp, rename = "Foo2")]
+    struct Foo;
+
+    impl Foo {
+        #[diplomat::attr(js, rename = "barbar")]
+        pub fn bar() {}
+        pub fn baz() {}
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, C++ will see a class <code>Foo2</code> instead of <code>Foo</code>, and in JS the method <code>bar()</code> will be renamed to <code>barbar()</code>.</p>
+<p>Note that some backends apply some of their own renames as well, which will be applied on top of the attribute rename. For example, the JS and Dart backends both turn <code>snake_case</code> into <code>camelCase</code> for better idiomaticity. Renaming to <code>bar_bar</code> would then produce <code>barBar()</code> in these backends.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="namespacing"><a class="header" href="#namespacing">Namespacing</a></h1>
+<p>(Supported by <code>cpp</code>, queried with <code>supports = namespacing</code>)</p>
+<p>This attribute can be applied on types and on bridge modules (applying to all types in the module).
+It allows code to be organized under one or more namespaces.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+#[diplomat::attr(auto, namespace = "mylib")]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo;
+
+    #[diplomat::opaque]
+    struct Bar;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, in C++ <code>Foo</code> and <code>Bar</code> will both be available as <code>mylib::Foo</code> and <code>mylib::Bar</code>.</p>
+<p>Nested namespaces are technically supported using things like <code>mylib::mymodule</code>, however they're not tested and support is brittle, so use at your own risk (<a href="https://github.com/rust-diplomat/diplomat/issues/591">#591</a>).</p>
+<p>There is some discussion over separating the concept of a namespace and a library in <a href="https://github.com/rust-diplomat/diplomat/issues/589">#589</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="constructors"><a class="header" href="#constructors">Constructors</a></h1>
+<p>(Supported by <code>dart</code>, queried with <code>supports = constructors</code>. Intended to be supported in <code>kotlin</code>, <code>js</code>, and <code>cpp</code>)</p>
+<p>Methods that return <code>Self</code> can be marked as a constructor:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo;
+
+    impl Foo {
+        #[diplomat::attr(auto, constructor)]
+        pub fn create() -&gt; Box&lt;Self&gt; {
+            Box::new(Foo)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>and then instead of there being a regular <code>Foo::create()</code> method, <code>Foo</code> will now have a direct constructor <code>Foo()</code>.</p>
+<p>Constructors can additionally be given names using <code>#[diplomat::attr(auto, named_constructor = "make")]</code>, for languages that support named constructors (<code>supports = named_constructors</code>).</p>
+<p>Not all languages support fallible constructors, this can be queried with <code>supports = fallible_constructors</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iterators-and-iterables"><a class="header" href="#iterators-and-iterables">Iterators and iterables</a></h1>
+<p>(Supported by <code>js</code>, <code>dart</code>, <code>kotlin</code>, queried with <code>supports = iterators</code> and <code>supports = iterables</code>)</p>
+<p>Some languages support a first-class notion of "iterator", a type that can be looped over in a <code>for</code> loop, stepping through its values typically until they are exhausted.</p>
+<p>Furthermore, some languages support a first-class notion of an "iterable": types like collections that can be asked to <em>produce</em> an iterator over their values which can be stepped through. Typically <code>for</code> loops will also accept iterables, and looping through an iterable involves producing and then looping through the associated iterator.</p>
+<p>The distinction here is: iterators are mutated by iteration and often one-time use, iterables are not mutated and can be iterated over multiple times. Put in Rust terms, <code>Iterator</code> types are iterators, and <code>IntoIterator</code> types are iterables.</p>
+<p>Diplomat supports marking types as such by using <code>iterator</code> and <code>iterable</code> on a specific <em>method</em> of the type.</p>
+<h2 id="marking-a-type-as-an-iterator"><a class="header" href="#marking-a-type-as-an-iterator">Marking a type as an iterator</a></h2>
+<p>To mark a type as an iterator, it should have a signature of <code>fn next(&amp;mut self) -&gt; Option&lt;...&gt;</code>. The method name may be anything, and it may take <code>self</code> by immutable reference instead, if needed (this is useful for situations where aliasing safety is needed, see <a href="https://github.com/rust-diplomat/diplomat/issues/225">#225</a> ).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct MyIterator&lt;'a&gt;(std::slice::Iter&lt;'a, u8&gt;);
+
+    impl&lt;'a&gt; MyIterator&lt;'a&gt; {
+        #[diplomat::attr(auto, iterator)]
+        pub fn next(&amp;mut self) -&gt; Option&lt;u8&gt; {
+            self.0.next().copied()
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="marking-a-type-as-an-iterable"><a class="header" href="#marking-a-type-as-an-iterable">Marking a type as an iterable</a></h2>
+<p>Marking a type as an iterable requires annotating it with <code>iterable</code>, and it just needs to be a method that takes <code>self</code> and returns a type that has a method marked as <code>iterator</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct MyVector(Vec&lt;u8&gt;);
+
+    impl MyVector {
+        #[diplomat::attr(auto, iterable)]
+        pub fn iter&lt;'a&gt; (&amp;'a self) -&gt; Box&lt;MyIterator&lt;'a&gt;&gt; {
+            Box::new(MyIterator(self.0.iter()))
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getters-and-setters"><a class="header" href="#getters-and-setters">Getters and setters</a></h1>
+<p>(Supported by <code>dart</code>, <code>js</code>, queried with <code>supports = accessors</code>)</p>
+<h2 id="getters"><a class="header" href="#getters">Getters</a></h2>
+<p>A method that returns a value (and takes no argument) can be marked as a getter. It may be fallible.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo {
+        a: u8
+    };
+
+    impl Foo {
+        #[diplomat::attr(auto, getter = "a")]
+        pub fn get_a(&amp;self) -&gt; u8 {
+            self.0
+        }
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>If the name is not provided, the method name is used<sup class="footnote-reference"><a href="#1">1</a></sup>.</p>
+<p>In languages that support accessors, instead of there being a <code>Foo::get_a()</code> method, people can use field access syntax on <code>Foo</code>-typed objects. For example, in JS, <code>foo.a</code> will work.</p>
+<h2 id="setters"><a class="header" href="#setters">Setters</a></h2>
+<p>A method that accepts a value can be marked as a setter. <code>self</code> need not be mutable, and the method may be fallible.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo {
+        a: u8
+    };
+
+    impl Foo {
+        #[diplomat::attr(auto, setter = "a")]
+        pub fn set_a(&amp;mut self, a: u8)  {
+            self.0 = a
+        }
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>If the name is not provided, the method name is used.</p>
+<p>In languages that support accessors, instead of there being a <code>Foo::set_a()</code> method, people can use field access syntax on <code>Foo</code>-typed objects to set the value. For example, in JS, <code>foo.a = 1</code> will work.</p>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>A potential future improvement is to use the method name but strip common prefixes like <code>get_</code> and <code>set_</code>, which would allow a getter and setter for the same field to coexist without requiring them have explicit names.</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="indexing"><a class="header" href="#indexing">Indexing</a></h1>
+<p>(Supported by <code>dart</code>, queried with <code>supports = indexing</code>. Intended to be supported in <code>cpp</code>)</p>
+<p><code>[]</code> can be overloaded in languages that support it by applying an <code>indexer</code> attribute to a method that takes an integer argument and returns an <code>Option&lt;u8&gt;</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo(Vec&lt;u8&gt;);
+
+    impl Foo {
+        #[diplomat::attr(auto, indexer)]
+        pub fn get(&amp;self, idx: usize) -&gt; Option&lt;u8&gt; {
+            self.0.get(idx).copied()
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="comparators"><a class="header" href="#comparators">Comparators</a></h1>
+<p>(Supported by <code>dart</code>, queried with <code>supports = comparators</code>. Intended to be supported in <code>cpp</code> and <code>kotlin</code>)</p>
+<p>Some languages allow for overloading the <code>&lt;</code>/<code>&gt;</code>/<code>=</code>/etc operators, similar to Rust's <code>PartialOrd</code>.</p>
+<p>To expose this over Diplomat, use the <code>comparison</code> attribute on a method that takes another <code>Self</code> parameter:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    #[derive(Ord, PartialOrd, Eq, PartialEq)]
+    struct Foo(u8);
+
+    impl Foo {
+        #[diplomat::attr(auto, comparison)]
+        pub fn compare(&amp;self, other: &amp;Foo) -&gt; std::cmp::Ordering {
+            self.cmp(other)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In Dart, this will provide an overloaded <code>==</code>, and <code>Foo</code> will implement <code>Comparable&lt;Foo&gt;</code>.</p>
+<p>We currently do not but Diplomat would like to also support the ability to <em>just</em> overload <code>==</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="stringifiers"><a class="header" href="#stringifiers">Stringifiers</a></h1>
+<p>(Supported by <code>dart</code>, queried with <code>supports = stringifiers</code>. Intended to be supported in <code>js</code> and <code>kotlin</code>)</p>
+<p>Some languages have a designated way to provide a method for converting a type to a string.</p>
+<p>The <code>stringifier</code>  attribute can be applied to such a method:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    #[diplomat::opaque]
+    struct Foo;
+
+    impl Foo {
+        #[diplomat::attr(auto, stringifier)]
+        pub fn dump(&amp;self, out: &amp;mut DiplomatWrite) {
+            ...
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In Dart, this will generate a <code>toString()</code> method.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="notes-on-diplomat-and-safety"><a class="header" href="#notes-on-diplomat-and-safety">Notes on Diplomat and safety</a></h1>
+<p>Overall, Diplomat is intended to provide safe FFI. However, there are some caveats around the current state of Diplomat's safety.</p>
+<h2 id="the-safety-of-the-bridge-crate-when-called-from-rust"><a class="header" href="#the-safety-of-the-bridge-crate-when-called-from-rust">The safety of the bridge crate when called from Rust</a></h2>
+<p>Diplomat's <code>extern "C"</code> functions are generated in a "bridge crate" that contains "bridge modules" tagged with <code>#[diplomat::bridge]</code>. This generated code is not designed with Rust as a primary client, rather, it is designed to be used from C.</p>
+<p>As such, it may be possible to trigger unsoundness by directly calling these <code>extern "C"</code> APIs from Rust. Work shoring this up is welcome.</p>
+<h2 id="aliasing-safety"><a class="header" href="#aliasing-safety">Aliasing safety</a></h2>
+<p>Primary issue: <a href="https://github.com/rust-diplomat/diplomat/issues/225">#225</a></p>
+<p>In Rust, it is undefined behavior to have any additional references (<code>&amp;</code> or <code>&amp;mut</code>) to some data whilst there is an active <code>&amp;mut T</code> reference to it.</p>
+<p>Diplomat currently lets you do the following:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+
+    #[diplomat::opaque]
+    struct Foo(u8);
+
+    #[diplomat::opaque]
+    struct Bar(Foo);
+
+
+    impl Bar {
+        pub fn change_foo_number(&amp;mut self, num: u8) {
+            self.0.0 = num;
+        }
+        pub fn get_foo(&amp;self) -&gt; &amp;Foo {
+            &amp;self.0
+        }
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>Calling <code>change_foo_number()</code> while a reference from <code>get_foo()</code> is active could be UB, or cause thread safety issues in multithreaded code.</p>
+<p>Diplomat has <a href="https://github.com/rust-diplomat/diplomat/issues/225">plans</a> on how to fix this, but until this is fixed, it can be avoided by doing the following:</p>
+<ul>
+<li>Limit the number of mutable methods you expose (use <code>RefCell</code> where needed)</li>
+<li>If you wish to expose a mutable method, ensure that:
+<ul>
+<li>The type cannot ever be obtained as an <code>&amp;T</code> or <code>&amp;mut T</code> from some other type</li>
+<li>The type does not have any methods that produce an <code>&amp;U</code> or <code>&amp;mut U</code>, where <code>U</code> is an opaque type or slice that borrows from things that the method intends to mutate.</li>
+</ul>
+</li>
+</ul>
+<p>As long as you're careful, this should not be an issue. ICU4X tends to not need much in the way of mutation and is so far safe from this.</p>
+<h2 id="thread-safety"><a class="header" href="#thread-safety">Thread safety</a></h2>
+<p>Primary issue: <a href="https://github.com/rust-diplomat/diplomat/issues/533">#533</a></p>
+<p>So far ICU4X has mostly been targeting languages where thread safety is locked down by thread isolation (Dart, JS), or where thread safety is a matter of documentation convention (C++), so it has not yet needed to think deeply about this. However, other users of Diplomat may.</p>
+<p>Specific backends may choose their own route as to how they apply and enforce thread safety. Diplomat may over time add some annotation system to help with this. Limiting mutation and using <code>RwLock</code>/<code>Mutex</code> can help here.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-set-up-a-minimal-backend"><a class="header" href="#how-to-set-up-a-minimal-backend">How to Set up a Minimal Backend</a></h1>
 <p>How to create a backend is quite language dependent, and what is easier in one
 may be harder in another. Below we will start setting up a simple backend. We'll

@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html" class="active"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html" class="active"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Returning Strings: Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li><li class="chapter-item expanded "><a href="abi.html"><strong aria-hidden="true">2.5.</strong> ABI naming/renaming</a></li><li class="chapter-item expanded "><a href="attrs.html"><strong aria-hidden="true">2.6.</strong> Customizing via attributes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="attrs/disable.html"><strong aria-hidden="true">2.6.1.</strong> Disabling APIs</a></li><li class="chapter-item expanded "><a href="attrs/rename.html"><strong aria-hidden="true">2.6.2.</strong> Renaming APIs</a></li><li class="chapter-item expanded "><a href="attrs/namespace.html"><strong aria-hidden="true">2.6.3.</strong> Namespacing</a></li><li class="chapter-item expanded "><a href="attrs/constructors.html"><strong aria-hidden="true">2.6.4.</strong> Constructors</a></li><li class="chapter-item expanded "><a href="attrs/iterators.html"><strong aria-hidden="true">2.6.5.</strong> Iterators and iterables</a></li><li class="chapter-item expanded "><a href="attrs/accessors.html"><strong aria-hidden="true">2.6.6.</strong> Getters and setters</a></li><li class="chapter-item expanded "><a href="attrs/indexing.html"><strong aria-hidden="true">2.6.7.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="attrs/comparators.html"><strong aria-hidden="true">2.6.8.</strong> Comparators</a></li><li class="chapter-item expanded "><a href="attrs/stringifiers.html"><strong aria-hidden="true">2.6.9.</strong> Stringifiers</a></li></ol></li><li class="chapter-item expanded "><a href="safety.html"><strong aria-hidden="true">2.7.</strong> Notes on Diplomat and safety</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -175,7 +175,7 @@
                     <main>
                         <h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
 <p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
-<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>).</p>
+<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>), or in return type position:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
@@ -185,13 +185,20 @@ mod ffi {
     pub struct Thingy;
 
     impl Thingy {
-        fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
+        pub fn maybe_create() -&gt; Option&lt;Box&lt;Thingy&gt;&gt; {
             Some(Box::new(Thingy))
+        }
+
+        // works in return position, but not elsewhere
+        pub fn make_option() -&gt; Option&lt;u8&gt; {
+            Some(1)
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In C++ this will return a <code>std::option&lt;Thingy&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p>In C++ <code>maybe_create</code> will return a <code>std::optional&lt;std::unique_ptr&lt;Thingy&gt;&gt;</code>, and in JS it will return a potentially-null object.</p>
+<p><code>make_option</code> will have similar behavior, returning <code>std::optional&lt;uint8_t&gt;</code> and an integer-or-null in JS.</p>
+<p>In the future, <code>Option&lt;T&gt;</code> will be supported for most types <code>T</code> (<a href="https://github.com/rust-diplomat/diplomat/issues/246">#246</a>).</p>
 
                     </main>
 

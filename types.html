@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html" class="active"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html" class="active"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Returning Strings: Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li><li class="chapter-item expanded "><a href="abi.html"><strong aria-hidden="true">2.5.</strong> ABI naming/renaming</a></li><li class="chapter-item expanded "><a href="attrs.html"><strong aria-hidden="true">2.6.</strong> Customizing via attributes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="attrs/disable.html"><strong aria-hidden="true">2.6.1.</strong> Disabling APIs</a></li><li class="chapter-item expanded "><a href="attrs/rename.html"><strong aria-hidden="true">2.6.2.</strong> Renaming APIs</a></li><li class="chapter-item expanded "><a href="attrs/namespace.html"><strong aria-hidden="true">2.6.3.</strong> Namespacing</a></li><li class="chapter-item expanded "><a href="attrs/constructors.html"><strong aria-hidden="true">2.6.4.</strong> Constructors</a></li><li class="chapter-item expanded "><a href="attrs/iterators.html"><strong aria-hidden="true">2.6.5.</strong> Iterators and iterables</a></li><li class="chapter-item expanded "><a href="attrs/accessors.html"><strong aria-hidden="true">2.6.6.</strong> Getters and setters</a></li><li class="chapter-item expanded "><a href="attrs/indexing.html"><strong aria-hidden="true">2.6.7.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="attrs/comparators.html"><strong aria-hidden="true">2.6.8.</strong> Comparators</a></li><li class="chapter-item expanded "><a href="attrs/stringifiers.html"><strong aria-hidden="true">2.6.9.</strong> Stringifiers</a></li></ol></li><li class="chapter-item expanded "><a href="safety.html"><strong aria-hidden="true">2.7.</strong> Notes on Diplomat and safety</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,16 +174,32 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="types"><a class="header" href="#types">Types</a></h1>
-<p>Diplomat only supports a small set of types that can be passed over FFI. These are:</p>
+<p>Diplomat only supports a small set of types that can be passed over FFI.</p>
 <ul>
 <li>Builtins:
 <ul>
-<li>All integers, as well as <code>bool</code> and <code>char</code></li>
-<li><code>&amp;[T]</code> where <code>T</code> is an integer, <code>bool</code>, or <code>char</code></li>
-<li><code>&amp;str</code> (string slices)</li>
-<li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings</li>
-<li><a href="./result.html"><code>Result&lt;T, E&gt;</code></a> in return values</li>
-<li><a href="./option.html"><code>Option&lt;T&gt;</code></a> of opaque types</li>
+<li>All integers</li>
+<li><code>bool</code></li>
+<li><code>char</code></li>
+<li><code>DiplomatChar</code> (<code>u32</code>), which is treated as <code>char</code>-equivalent on the backend language, but need not be a valid Unicode code point for the Rust code to be sound.</li>
+<li>Slices, <code>&amp;[T]</code> where <code>T</code> is one of:
+<ul>
+<li>An integer type</li>
+<li><code>bool</code></li>
+<li><code>char</code></li>
+<li><code>DiplomatByte</code> (<code>u8</code>): The same as <code>u8</code> except in languages where "byte buffer" and "list of integers" are different types</li>
+</ul>
+</li>
+<li>String slices:
+<ul>
+<li><code>&amp;str</code>: A validated, UTF-8 string. Will be converted/validated by the target language bindings if necessary.</li>
+<li><code>&amp;DiplomatStr</code>: An unvalidated string expected to be UTF-8.</li>
+<li><code>&amp;DiplomatStr16</code>: An unvalidated string expected to be UTF-16.</li>
+</ul>
+</li>
+<li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings. This needs to be the last parameter of the method.</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types</li>
+<li><a href="./result.html"><code>Result&lt;T, E&gt;</code> and <code>Option&lt;T&gt;</code></a> in return values</li>
 <li><code>()</code> as a <code>Result</code> <code>Ok</code>/<code>Error</code> type, or as a return value</li>
 </ul>
 </li>
@@ -194,7 +210,7 @@
 </ul>
 </li>
 </ul>
-<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/251">iterators</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a>)</p>
+<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/246">full option types</a>)</p>
 <p>The <em>main</em> distinction to keep track of is between "opaque types" and "structs": opaque types are for when you want to wrap a Rust object that has its own semantics, whereas "structs" are for when you want to transparently pass around multiple values at once (usually when you want to make an options struct as an argument, or return multiple values at once).</p>
 
                     </main>

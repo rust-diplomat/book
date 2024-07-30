@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Lifetimes - The Diplomat Book</title>
+        <title>ABI naming/renaming - The Diplomat Book</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Returning Strings: Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html" class="active"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li><li class="chapter-item expanded "><a href="abi.html"><strong aria-hidden="true">2.5.</strong> ABI naming/renaming</a></li><li class="chapter-item expanded "><a href="attrs.html"><strong aria-hidden="true">2.6.</strong> Customizing via attributes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="attrs/disable.html"><strong aria-hidden="true">2.6.1.</strong> Disabling APIs</a></li><li class="chapter-item expanded "><a href="attrs/rename.html"><strong aria-hidden="true">2.6.2.</strong> Renaming APIs</a></li><li class="chapter-item expanded "><a href="attrs/namespace.html"><strong aria-hidden="true">2.6.3.</strong> Namespacing</a></li><li class="chapter-item expanded "><a href="attrs/constructors.html"><strong aria-hidden="true">2.6.4.</strong> Constructors</a></li><li class="chapter-item expanded "><a href="attrs/iterators.html"><strong aria-hidden="true">2.6.5.</strong> Iterators and iterables</a></li><li class="chapter-item expanded "><a href="attrs/accessors.html"><strong aria-hidden="true">2.6.6.</strong> Getters and setters</a></li><li class="chapter-item expanded "><a href="attrs/indexing.html"><strong aria-hidden="true">2.6.7.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="attrs/comparators.html"><strong aria-hidden="true">2.6.8.</strong> Comparators</a></li><li class="chapter-item expanded "><a href="attrs/stringifiers.html"><strong aria-hidden="true">2.6.9.</strong> Stringifiers</a></li></ol></li><li class="chapter-item expanded "><a href="safety.html"><strong aria-hidden="true">2.7.</strong> Notes on Diplomat and safety</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="user.html"><strong aria-hidden="true">2.</strong> User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics.html"><strong aria-hidden="true">2.1.</strong> Basics</a></li><li class="chapter-item expanded "><a href="types.html"><strong aria-hidden="true">2.2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="opaque.html"><strong aria-hidden="true">2.2.1.</strong> Opaque types</a></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">2.2.2.</strong> Structs and enums</a></li><li class="chapter-item expanded "><a href="option.html"><strong aria-hidden="true">2.2.3.</strong> Options</a></li><li class="chapter-item expanded "><a href="result.html"><strong aria-hidden="true">2.2.4.</strong> Results</a></li><li class="chapter-item expanded "><a href="writeable.html"><strong aria-hidden="true">2.2.5.</strong> Returning Strings: Writeable</a></li></ol></li><li class="chapter-item expanded "><a href="docs.html"><strong aria-hidden="true">2.3.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="lifetimes.html"><strong aria-hidden="true">2.4.</strong> Lifetimes</a></li><li class="chapter-item expanded "><a href="abi.html" class="active"><strong aria-hidden="true">2.5.</strong> ABI naming/renaming</a></li><li class="chapter-item expanded "><a href="attrs.html"><strong aria-hidden="true">2.6.</strong> Customizing via attributes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="attrs/disable.html"><strong aria-hidden="true">2.6.1.</strong> Disabling APIs</a></li><li class="chapter-item expanded "><a href="attrs/rename.html"><strong aria-hidden="true">2.6.2.</strong> Renaming APIs</a></li><li class="chapter-item expanded "><a href="attrs/namespace.html"><strong aria-hidden="true">2.6.3.</strong> Namespacing</a></li><li class="chapter-item expanded "><a href="attrs/constructors.html"><strong aria-hidden="true">2.6.4.</strong> Constructors</a></li><li class="chapter-item expanded "><a href="attrs/iterators.html"><strong aria-hidden="true">2.6.5.</strong> Iterators and iterables</a></li><li class="chapter-item expanded "><a href="attrs/accessors.html"><strong aria-hidden="true">2.6.6.</strong> Getters and setters</a></li><li class="chapter-item expanded "><a href="attrs/indexing.html"><strong aria-hidden="true">2.6.7.</strong> Indexing</a></li><li class="chapter-item expanded "><a href="attrs/comparators.html"><strong aria-hidden="true">2.6.8.</strong> Comparators</a></li><li class="chapter-item expanded "><a href="attrs/stringifiers.html"><strong aria-hidden="true">2.6.9.</strong> Stringifiers</a></li></ol></li><li class="chapter-item expanded "><a href="safety.html"><strong aria-hidden="true">2.7.</strong> Notes on Diplomat and safety</a></li></ol></li><li class="chapter-item expanded "><a href="developer.html"><strong aria-hidden="true">3.</strong> Backend developer guide</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -173,56 +173,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
-<p>Diplomat <em>is</em> able to safely handle methods that do complex borrowing, as long as the lifetimes are fully specified (i.e., not elided).</p>
-<p>In general, Diplomat attempts to follow language norms when it comes to patterns akin to borrowing. In C++, for example, the norm is to document the behavior of a method, which is what Diplomat does. However, in JS, the norm is to not have use-after-frees, which Diplomat attempts to achieve by stashing extra references to borrowed-from objects.</p>
-<p>For example, let's take this iterator API:</p>
+                        <h1 id="abi-namingrenaming"><a class="header" href="#abi-namingrenaming">ABI naming/renaming</a></h1>
+<p>As previously mentioned, the <code>#[diplomat::bridge]</code> macro from the <code>diplomat</code> crate will generate <code>extern "C"</code> functions for all methods expected to be exposed over FFI.</p>
+<p><em>By default</em>, the naming scheme for these types is <code>TypeName_method()</code>. For example, <code>Foo::bar()</code> becomes <code>Foo_bar()</code>.</p>
+<p>However, these names can be changed, both at an individual and bulk level, using the <code>#[diplomat::abi_rename = "..."]</code> attribute.</p>
+<p>One use case for this is maintaining ABI stability. Let's say you wished to change the signature or even behavior of <code>Foo::bar()</code> to go from returning a <code>u8</code> to returning a <code>u16</code>, and were okay with requiring new bindings for the new behavior, but wanted to ensure that old headers/bindings would still work against new Rust code without any change. You could do that by</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
 mod ffi {
 
     #[diplomat::opaque]
-    pub struct MyFancyVec(Vec&lt;u32&gt;); // not very fancy
+    struct Foo;
 
-    pub struct MyFancyIterator&lt;'a&gt;(std::slice::Iter&lt;'a, u32&gt;);
+    impl Foo {
+        #[diplomat::abi_rename = "Foo_bar"]
+        pub fn old_bar(&amp;self) -&gt; u8 {}
 
-
-    impl MyFancyVec {
-        pub fn new(count: usize) -&gt; Box&lt;MyFancyVec&gt; {
-            // make a random vector, this is an example
-            let vec = (5..(count + 5)).collect();
-            Box::new(MyFancyVec(vec));
-        }
-
-        pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Box&lt;MyFancyIterator&lt;'a&gt;&gt; {
-            Box::new(MyFancyIterator(self.0.iter()))
-        }
-    }
-
-    impl&lt;'a&gt; MyFancyIterator&lt;'a&gt; {
-        fn next(&amp;mut self) -&gt; Option&lt;u32&gt; {
-            self.0.next().copied()
-        }
+        #[diplomat::abi_rename = "Foo_bar2"]
+        pub fn bar(&amp;self) -&gt; u16 {}
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<p>It's crucial the return type of <code>MyFancyVec::iter()</code> is not held on to longer than the <code>MyFancyVec</code> it came from.</p>
-<p>In C++, this will produce documentation that looks like the following:</p>
-<pre><code>Lifetimes: `self` must live at least as long as the output.
-</code></pre>
-<p>On the other hand, in JS, the JS object wrapping <code>MyFancyIterator</code> will internally stash a reference to the <code>MyFancyVec</code>, which will be noticed by the GC, keeping the vector alive as long as needed.</p>
-<p>This also works with non-opaque structs; you can have a function that takes in a struct where one field has a lifetime, and returns a different struct with a similar property, and Diplomat will document or GC-link the appropriate fields.</p>
+<p>Here, <code>old_bar()</code> is still exposed over FFI as <code>Foo_bar()</code>, whereas the new <code>bar()</code> method is exposed as <code>Foo_bar2()</code>.</p>
+<p>However, from the point of view of higher-level bindings generated over this (e.g. in C++ or JS), <code>Foo</code> now has a <code>bar()</code> method with a new signature, and an <code>old_bar()</code> method with the signature <code>bar()</code> used to have.</p>
+<p>The attribute can be applied directly on methods, but it can also be applied on impl blocks, types, and even entire bridge modules. It supports using replacement patterns, so it can be used for namespacing the generated FFI functions:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+#[diplomat::abi_rename = "mylibrary_{}"]
+mod ffi {
+
+    #[diplomat::opaque]
+    struct Foo;
+
+    impl Foo {
+        pub fn bar() -&gt; u8 {}
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here, instead of the function being generated as <code>Foo_bar()</code>, it will be generated as <code>mylibrary_Foo_bar()</code> which is a more unique symbol, less likely to cause trouble for the linker.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="docs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="lifetimes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="abi.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="attrs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -232,11 +232,11 @@ mod ffi {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="docs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="lifetimes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="abi.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="attrs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
