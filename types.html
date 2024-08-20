@@ -198,8 +198,10 @@
 </ul>
 </li>
 <li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings. This needs to be the last parameter of the method.</li>
-<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types</li>
-<li><a href="./result.html"><code>Result&lt;T, E&gt;</code> and <code>Option&lt;T&gt;</code></a> in return values</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types, <code>Option&lt;T&gt;</code> of structs, enums, and primitives</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types, <code>Option&lt;T&gt;</code> of structs, enums, and primitives</li>
+<li>Callbacks in parameters (Undocumented in the book, but implemented in C and Kotlin. See <a href="https://github.com/rust-diplomat/diplomat/issues/146">tracking issue</a>)</li>
+<li>[<code>Result&lt;T, E&gt;</code> in return values</li>
 <li><code>()</code> as a <code>Result</code> <code>Ok</code>/<code>Error</code> type, or as a return value</li>
 </ul>
 </li>
@@ -210,7 +212,7 @@
 </ul>
 </li>
 </ul>
-<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/246">full option types</a>)</p>
+<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/pull/621">traits</a>)</p>
 <p>The <em>main</em> distinction to keep track of is between "opaque types" and "structs": opaque types are for when you want to wrap a Rust object that has its own semantics, whereas "structs" are for when you want to transparently pass around multiple values at once (usually when you want to make an options struct as an argument, or return multiple values at once).</p>
 
                     </main>

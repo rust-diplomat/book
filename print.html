@@ -309,8 +309,10 @@ extern "C" fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
 </ul>
 </li>
 <li><a href="./writeable.html"><code>DiplomatWriteable</code></a> for returning strings. This needs to be the last parameter of the method.</li>
-<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types</li>
-<li><a href="./result.html"><code>Result&lt;T, E&gt;</code> and <code>Option&lt;T&gt;</code></a> in return values</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types, <code>Option&lt;T&gt;</code> of structs, enums, and primitives</li>
+<li><a href="./option.html"><code>Option&lt;&amp;T&gt;</code> ,<code>Option&lt;Box&lt;T&gt;&gt;</code></a> of opaque types, <code>Option&lt;T&gt;</code> of structs, enums, and primitives</li>
+<li>Callbacks in parameters (Undocumented in the book, but implemented in C and Kotlin. See <a href="https://github.com/rust-diplomat/diplomat/issues/146">tracking issue</a>)</li>
+<li>[<code>Result&lt;T, E&gt;</code> in return values</li>
 <li><code>()</code> as a <code>Result</code> <code>Ok</code>/<code>Error</code> type, or as a return value</li>
 </ul>
 </li>
@@ -321,7 +323,7 @@ extern "C" fn MyFFIStruct_do_a_thing(this: &amp;MyFFIStruct) {
 </ul>
 </li>
 </ul>
-<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/issues/246">full option types</a>)</p>
+<p>More types can be supported in the future (We have issues for <a href="https://github.com/rust-diplomat/diplomat/issues/146">callbacks</a> and <a href="https://github.com/rust-diplomat/diplomat/pull/621">traits</a>)</p>
 <p>The <em>main</em> distinction to keep track of is between "opaque types" and "structs": opaque types are for when you want to wrap a Rust object that has its own semantics, whereas "structs" are for when you want to transparently pass around multiple values at once (usually when you want to make an options struct as an argument, or return multiple values at once).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="opaque-types"><a class="header" href="#opaque-types">Opaque Types</a></h1>
 <p>In the vast majority of cases, we'd like to expose Rust types over FFI "opaquely", that is, the FFI code does not know anything about the contents of these types, rather it wants to do things with the type.</p>
@@ -506,7 +508,7 @@ mod ffi {
 <span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="option-types"><a class="header" href="#option-types">Option types</a></h1>
 <p>Option types in Diplomat are relatively straightforward, you simply use <code>Option&lt;T&gt;</code> and it turns into the idiomatic equivalent over FFI.</p>
-<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>), or in return type position:</p>
+<p><code>Option&lt;T&gt;</code> currently only works when wrapping reference types (<code>Box&lt;OpaqueType&gt;</code> and <code>&amp;OpaqueType</code>), wrapping structs/enums/primitives, or in return type position:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[diplomat::bridge]
@@ -520,16 +522,36 @@ mod ffi {
             Some(Box::new(Thingy))
         }
 
-        // works in return position, but not elsewhere
-        pub fn make_option() -&gt; Option&lt;u8&gt; {
-            Some(1)
+        pub fn increment_option(x: Option&lt;u8&gt;) -&gt; Option&lt;u8&gt; {
+            x.map(|inner| inner + 1)
         }
     }
 }
 <span class="boring">}</span></code></pre></pre>
 <p>In C++ <code>maybe_create</code> will return a <code>std::optional&lt;std::unique_ptr&lt;Thingy&gt;&gt;</code>, and in JS it will return a potentially-null object.</p>
-<p><code>make_option</code> will have similar behavior, returning <code>std::optional&lt;uint8_t&gt;</code> and an integer-or-null in JS.</p>
-<p>In the future, <code>Option&lt;T&gt;</code> will be supported for most types <code>T</code> (<a href="https://github.com/rust-diplomat/diplomat/issues/246">#246</a>).</p>
+<p><code>make_option</code> will have similar behavior, returning <code>std::optional&lt;uint8_t&gt;</code> and an integer-or-null in JS. It will accept <code>std::optional&lt;uint8_t&gt;</code> in C++ and null-check the parameter in JS.</p>
+<h2 id="diplomatoption"><a class="header" href="#diplomatoption">DiplomatOption</a></h2>
+<p><code>Option&lt;T&gt;</code> is FFI-safe for reference types but not for other arbitrary types. When used in function parameters, Diplomat will automatically use FFI-safe types over the boundary, however with structs layout concerns prevent automatically doing this. Instead, if you wish to use an <code>Option&lt;T&gt;</code> in a struct (for struct, enum, or primitive <code>T</code>), use <code>DiplomatOption&lt;T&gt;</code></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[diplomat::bridge]
+mod ffi {
+    use diplomat_runtime::DiplomatOption;
+
+    #[diplomat::opaque]
+    pub struct MyOpaque(u8);
+
+    pub enum MyEnum {
+        Foo, Bar
+    }
+
+    pub struct MyStruct&lt;'a&gt; {
+        a: DiplomatOption&lt;u8&gt;,
+        b: DiplomatOption&lt;MyEnum&gt;,
+        c: Option&lt;&amp;'a MyOpaque&gt;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="result-types"><a class="header" href="#result-types">Result types</a></h1>
 <p>Result types are returned by using <a href="https://docs.rs/diplomat-runtime/0.2.0/diplomat_runtime/struct.DiplomatResult.html"><code>Result&lt;T, E&gt;</code></a> (or <code>DiplomatResult&lt;T, E&gt;</code>).</p>
 <p>For example, let's say we wish to define a fallible constructor:</p>
