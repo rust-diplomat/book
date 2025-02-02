@@ -60,13 +60,11 @@ mod test {
 
             }
         };
-        let item = syn::parse2::<syn::File>(tokens).expect("failed to parse item ");
+        let file = syn::parse2::<syn::File>(tokens).expect("failed to parse item ");
 
-        let diplomat_file = ast::File::from(&item);
-        let env = diplomat_file.all_types();
         let attr_validator = hir::BasicAttributeValidator::new("my_backend_test");
 
-        let context = match hir::TypeContext::from_ast(&env, attr_validator) {
+        let context = match hir::TypeContext::from_syn(&file, attr_validator) {
             Ok(context) => context,
             Err(e) => {
                 for (_cx, err) in e {
