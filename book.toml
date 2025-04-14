@@ -5,6 +5,9 @@ multilingual = false
 src = "src"
 title = "The Diplomat Book"
 
+[output.html]
+input-404 = "404.html"
+
 [output.html.redirect]
 "/intro.html" = "https://rust-diplomat.github.io/diplomat/"
 "/user.html" = "https://rust-diplomat.github.io/diplomat/user"
